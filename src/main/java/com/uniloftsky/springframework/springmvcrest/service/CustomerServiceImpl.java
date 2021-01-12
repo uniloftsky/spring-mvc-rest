@@ -3,12 +3,12 @@ package com.uniloftsky.springframework.springmvcrest.service;
 import com.uniloftsky.springframework.springmvcrest.api.v1.mapper.CustomerMapper;
 import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerDTO;
 import com.uniloftsky.springframework.springmvcrest.controllers.v1.CustomerController;
+import com.uniloftsky.springframework.springmvcrest.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.springmvcrest.model.Customer;
 import com.uniloftsky.springframework.springmvcrest.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,13 +36,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findById(Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
-        if(!customerOptional.isPresent()) {
-            throw new RuntimeException("Expected customer not found!");
-        }
-        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customerOptional.get());
-        customerDTO.setCustomerUrl(getCustomerUrl(customerOptional.get().getId()));
-        return customerDTO;
+        return customerRepository.findById(id).map(customer -> {
+            CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
+            customerDTO.setCustomerUrl(getCustomerUrl(id));
+           return customerDTO;
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
@@ -77,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             returnDTO.setCustomerUrl(getCustomerUrl(id));
             return returnDTO;
-        }).orElseThrow(RuntimeException::new);
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     public String getCustomerUrl(Long id) {
