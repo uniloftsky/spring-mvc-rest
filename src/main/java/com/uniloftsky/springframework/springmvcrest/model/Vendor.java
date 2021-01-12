@@ -11,9 +11,9 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @Entity
-public class Category {
+public class Vendor {
 
-    public Category(String name) {
+    public Vendor(String name) {
         this.name = name;
     }
 
