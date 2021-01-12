@@ -39,15 +39,48 @@ public class CustomerServiceImpl implements CustomerService {
         if(!customerOptional.isPresent()) {
             throw new RuntimeException("Expected customer not found!");
         }
-        return customerMapper.customerToCustomerDTO(customerOptional.get());
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customerOptional.get());
+        customerDTO.setCustomerUrl("api/v1/customer/" + customerOptional.get().getId());
+        return customerDTO;
     }
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
         Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        return saveAndReturnDTO(customer);
+    }
+
+    private CustomerDTO saveAndReturnDTO(Customer customer) {
+
         Customer savedCustomer = customerRepository.save(customer);
         CustomerDTO returnDto = customerMapper.customerToCustomerDTO(customer);
         returnDto.setCustomerUrl("api/v1/customer/" + savedCustomer.getId());
         return returnDto;
+    }
+
+    @Override
+    public CustomerDTO customerSave(Long id, CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        customer.setId(id);
+        return saveAndReturnDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO) {
+        return customerRepository.findById(id).map(customer -> {
+            if(customerDTO.getFirstName() != null) {
+                customer.setFirstName(customerDTO.getFirstName());
+            } if(customerDTO.getLastName() != null) {
+                customer.setLastName(customerDTO.getLastName());
+            }
+            CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
+            returnDTO.setCustomerUrl("api/v1/customer/" + customer.getId());
+            return returnDTO;
+        }).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        customerRepository.deleteById(id);
     }
 }
