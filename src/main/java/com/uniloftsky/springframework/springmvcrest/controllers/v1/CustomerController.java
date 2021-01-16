@@ -3,9 +3,12 @@ package com.uniloftsky.springframework.springmvcrest.controllers.v1;
 import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerDTO;
 import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerListDTO;
 import com.uniloftsky.springframework.springmvcrest.service.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Api(description = "This is my customer controller")
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
@@ -18,6 +21,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @ApiOperation(value = "This will get a list of customers.", notes = "There are some notes about API.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getListCustomers() {
