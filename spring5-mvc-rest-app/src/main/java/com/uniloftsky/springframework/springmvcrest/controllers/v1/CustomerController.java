@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.springmvcrest.controllers.v1;
 
-import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerDTO;
-import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerListDTO;
+import com.uniloftsky.springframework.model.CustomerDTO;
+import com.uniloftsky.springframework.model.CustomerListDTO;
 import com.uniloftsky.springframework.springmvcrest.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,9 @@ public class CustomerController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getListCustomers() {
-        return new CustomerListDTO(customerService.getAllCustomers());
+        CustomerListDTO customerListDTO = new CustomerListDTO();
+        customerListDTO.getCustomers().addAll(customerService.getAllCustomers());
+        return customerListDTO;
     }
 
     @GetMapping("{id}")
@@ -56,7 +58,9 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
-        return new CustomerListDTO(customerService.getAllCustomers());
+        CustomerListDTO customerListDTO = new CustomerListDTO();
+        customerListDTO.getCustomers().addAll(customerService.getAllCustomers());
+        return customerListDTO;
     }
 
 }

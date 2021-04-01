@@ -12,14 +12,6 @@
     <artifactId>spring-mvc-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.uniloftsky.springframework</groupId>
-            <artifactId>spring5-mvc-rest-app</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>

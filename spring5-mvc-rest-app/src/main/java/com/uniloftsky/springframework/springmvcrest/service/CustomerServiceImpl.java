@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.springmvcrest.service;
 
+import com.uniloftsky.springframework.model.CustomerDTO;
 import com.uniloftsky.springframework.springmvcrest.api.v1.mapper.CustomerMapper;
-import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerDTO;
 import com.uniloftsky.springframework.springmvcrest.controllers.v1.CustomerController;
 import com.uniloftsky.springframework.springmvcrest.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.springmvcrest.model.Customer;
@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id).map(customer -> {
             if(customerDTO.getFirstName() != null) {
                 customer.setFirstName(customerDTO.getFirstName());
-            } if(customerDTO.getLastName() != null) {
+            } if(customerDTO.getFirstName() != null) {
                 customer.setLastName(customerDTO.getLastName());
             }
             CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));

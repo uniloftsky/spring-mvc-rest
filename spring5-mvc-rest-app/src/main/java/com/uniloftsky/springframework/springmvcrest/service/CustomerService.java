@@ -1,6 +1,7 @@
 package com.uniloftsky.springframework.springmvcrest.service;
 
-import com.uniloftsky.springframework.springmvcrest.api.v1.model.CustomerDTO;
+
+import com.uniloftsky.springframework.model.CustomerDTO;
 
 import java.util.List;
 
